@@ -176,6 +176,10 @@ app.get(`/profile/:id`, (req, res) => {
 	
 });
 
+app.get(`/`, (req, res) => {
+	res.status(200).json({ status: `hello heroku!`});
+});
+
 app.listen(PORT, () => {
 	console.log(`Server is listening on port ${PORT}`);
 });
