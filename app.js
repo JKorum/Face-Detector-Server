@@ -1,3 +1,4 @@
+require(`dotenv`).config();
 const express = require(`express`);
 const bodyParser = require(`body-parser`); 
 const cors = require(`cors`);
@@ -11,9 +12,11 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json()); 
 
+const PORT = process.env.PORT || 3001;
+
 // initializing Clarifai
 const clarifaiModule = new Clarifai.App({
-	apiKey: '7ef291b3be3041ab8ae2f7dd9a13a8af'
+	apiKey: process.env.CLARIFAI_KEY
 });
 
 // require db module, feed it configuaration obj
@@ -21,14 +24,15 @@ const knex = require(`knex`)({
 	client: `pg`,
   connection: {
     host : `127.0.0.1`,     
-    user : `postgres`,
-    password : `korum121189data`, // should use 'dotenv' package to do it safe
-    database : `facedetector`
+    user : process.env.DB_USER,
+    password : process.env.DB_PASSWORD, 
+    database : process.env.DB_NAME
   }
 });
 
 /* following route is used to provide the endpoint 
-	for fetching Clarifai API */
+	 for fetching Clarifai API 
+	 input --> url / output --> API data	*/
 app.post(`/imageurl`, (req, res) => {	
 	const { input } = req.body;
 	
@@ -172,4 +176,6 @@ app.get(`/profile/:id`, (req, res) => {
 	
 });
 
-app.listen(3001);
+app.listen(PORT, () => {
+	console.log(`Server is listening on port ${PORT}`);
+});
