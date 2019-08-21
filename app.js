@@ -20,7 +20,17 @@ const clarifaiModule = new Clarifai.App({
 });
 
 // require db module, feed it configuaration obj
+
 const knex = require(`knex`)({
+	client: `pg`,
+  connection: {
+    connectionString: process.env.DATABASE_URL,
+  	ssl: true
+  }
+});
+
+// confuguration for local environment 
+/*const knex = require(`knex`)({
 	client: `pg`,
   connection: {
     host : `127.0.0.1`,     
@@ -28,7 +38,7 @@ const knex = require(`knex`)({
     password : process.env.DB_PASSWORD, 
     database : process.env.DB_NAME
   }
-});
+});*/
 
 /* following route is used to provide the endpoint 
 	 for fetching Clarifai API 
